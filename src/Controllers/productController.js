@@ -5,12 +5,12 @@ const path = require('path');
 
 exports.getAllProducts = async (req, res) => {
   try {
+    console.log('hello');
     // PAGINATION
     let limit = req.query.limit * 1 || 10;
     let page = req.query.page * 1 || 1;
     let skip = (page - 1) * limit;
     const productsCount = await productModel.countDocuments();
-    console.log(productsCount);
     if (skip >= productsCount) throw new Error('Page does not exist');
     const products = await productModel.find().skip(skip).limit(limit);
     res.status(200).json({
@@ -34,7 +34,11 @@ exports.createProduct = async (req, res) => {
     // 2-UPLOAD TO CLOUDINARY
     const result = await cloudinaryUploadImage(imagePath);
     const { secure_url } = result;
-    const addedProduct = await productModel.insertMany({ ...req.body, image: secure_url });
+    const addedProduct = await productModel.insertMany({
+      ...req.body,
+      image: secure_url,
+      slug: slugify(req.body.productName, { replacement: '-', lower: true }),
+    });
     res.status(201).json({
       status: 'success',
       data: {
@@ -75,13 +79,12 @@ exports.updateProduct = async (req, res) => {
       const imagePath = path.join(__dirname, `../../Assets/images/${req.file.filename}`);
       await cloudinaryRemoveImage(foundedProduct.public_id);
       const result = await cloudinaryUploadImage(imagePath);
-      foundedProduct.public_id = result.public_id;
       foundedProduct.image = result.secure_url;
       await foundedProduct.save();
     }
     const updatedProduct = await productModel.findOneAndUpdate(
       { productName: req.params.productName },
-      { ...req.body },
+      { ...req.body, slug: slugify(req.body.productName, { replacement: '-', lower: true }) },
       { new: true }
     );
     res.status(201).json({ status: 'success', data: { updatedProduct } });
@@ -96,8 +99,7 @@ exports.getCategoyProducts = async (req, res) => {
   try {
     const categoryProducts = await productModel.find({ category: req.body.category });
     if (!categoryProducts.length)
-      return res.status(404).json({ status: 'failed', message: "the category you searched for isn't exist" });
-
+      return res.status(404).json({ status: 'failed', message: 'the category you searched for not exist' });
     res.status(200).json({ status: 'success', data: { categoryProducts } });
   } catch (err) {
     res.status(500).json({ status: 'failed', err });

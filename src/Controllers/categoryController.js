@@ -6,7 +6,7 @@ const { cloudinaryUploadImage, cloudinaryRemoveImage } = require('../Helper/uplo
 exports.getAllCategories = async (req, res) => {
   try {
     const categories = await categoryModel.find();
-    res.status(200).json({ status: 'success', data: { categories } });
+    res.status(200).json({ categories });
   } catch (err) {
     res.status(500).json({ status: 'failed', err });
   }

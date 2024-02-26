@@ -4,7 +4,8 @@
   "description": "awesome e-commerce website",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "jasmine"
   },
   "author": "Mahmoud samir",
   "license": "ISC",
@@ -22,5 +23,9 @@
     "slugify": "^1.6.6",
     "stripe": "^14.14.0",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "jasmine": "^5.1.0",
+    "supertest": "^6.3.4"
   }
 }

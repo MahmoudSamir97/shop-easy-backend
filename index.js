@@ -6,8 +6,8 @@ const userRoutes = require('./src/Routes/userRoute');
 const categorieRoutes = require('./src/Routes/categoryRoute');
 const couponRoutes = require('./src/Routes/couponRoute');
 const cartRoutes = require('./src/Routes/cartRoute');
-const productRoutes = require('./src/Routes/productRoutes');
 const stripRoutes = require('./src/Routes/strip');
+const productRoutes = require('./src/Routes/productRoutes');
 
 // MIDDLEWARES
 app.use(express.json());
