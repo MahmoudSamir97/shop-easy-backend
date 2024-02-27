@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "awesome e-commerce website",
   "main": "server.js",
+  "engines": {
+    "node": "20.10.0"
+  },
   "scripts": {
     "start": "nodemon server.js",
     "test": "jasmine"
@@ -12,6 +15,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.0.0",
+    "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",

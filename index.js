@@ -1,6 +1,7 @@
 const dotenv = require('dotenv').config();
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const authRoutes = require('./src/Routes/authRoute');
 const userRoutes = require('./src/Routes/userRoute');
 const categorieRoutes = require('./src/Routes/categoryRoute');
@@ -10,6 +11,7 @@ const stripRoutes = require('./src/Routes/strip');
 const productRoutes = require('./src/Routes/productRoutes');
 
 // MIDDLEWARES
+app.use(cors());
 app.use(express.json());
 
 // ROUTES
