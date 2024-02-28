@@ -9,19 +9,19 @@ exports.register = async (req, res) => {
   try {
     // CHECK IF USER REGISTERED BEFORE
     const { email, password, userName } = req.body;
-    const foundedUser = await userModel.findOne({ email: email });
+    const foundedUser = await userModel.findOne({ email });
     if (foundedUser)
       return res.status(400).json({
         status: 'failed',
         message: 'User already registered',
       });
-    // CHECK FOR PASSWORD MATCHING
+    // HASHING PASSWORD, THEN SAVE IT IN DB
     const hashedPassword = bcrypt.hashSync(password, Number(process.env.BCRYPT_SALT));
     const registeredUser = await userModel.insertMany({
       ...req.body,
       password: hashedPassword,
     });
-    // SEND REGISTER'S TOKEN FOR USER
+    // VERIFY USER REGISTRATION THROUGH EMAIL
     const token = jwt.sign({ userId: registeredUser[0]._id }, process.env.JWT_SECRET);
     let link = `http://localhost:${process.env.PORT}/auth/verify/${token}`;
     sendeEmailFun(verifyTemplate, email, link, userName);

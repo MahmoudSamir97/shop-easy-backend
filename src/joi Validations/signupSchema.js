@@ -11,11 +11,10 @@ const signupSchema = joi.object({
     .pattern(new RegExp(/^[A-Z][a-z1-9]{6,}[@#$%^&*]{1,}$/))
     .required(),
   //   repeated_password: joi.ref("password"),
-  repeated_password: joi.string().required().valid(joi.ref('password')),
+  CPassword: joi.string().required().valid(joi.ref('password')),
   role: joi.string(),
   isDeleted: joi.boolean(),
   isVerfied: joi.boolean(),
-  adresses: joi.array().items(joi.string().min(10)),
   phoneNumber: joi
     .string()
     .pattern(new RegExp(/^01[0|1|2|5]{1}[0-9]{8}$/))
