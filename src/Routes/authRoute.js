@@ -9,7 +9,7 @@ const {
   getDashboard,
 } = require('../Controllers/authController');
 const validate = require('../Middlewares/Valiadate');
-const signupSchema = require('../joi Validations/signupSchema');
+const signupSchema = require('../Validations/signupSchema');
 const verifyRole = require('../Middlewares/verifyRole');
 const authenticateToken = require('../Middlewares/authenticateToken');
 const authRoutes = express.Router();

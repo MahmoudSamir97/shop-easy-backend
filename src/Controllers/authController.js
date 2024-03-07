@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
     const foundedUser = await userModel.findOne({ email });
     if (foundedUser)
       return res.status(400).json({
-        status: 'failed',
+        status: 'fail',
         message: 'User already registered',
       });
     // HASHING PASSWORD, THEN SAVE IT IN DB
@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
     });
     // VERIFY USER REGISTRATION THROUGH EMAIL
     const token = jwt.sign({ userId: registeredUser[0]._id }, process.env.JWT_SECRET);
-    let link = `http://localhost:${process.env.PORT}/auth/verify/${token}`;
+    let link = `https://shop-easy-backend.onrender.com/auth/verify/${token}`;
     sendeEmailFun(verifyTemplate, email, link, userName);
     res.status(201).json({
       status: 'success',
@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      status: 'failed',
+      status: 'error',
       message: err.message,
     });
   }
@@ -55,8 +55,8 @@ exports.login = async (req, res) => {
         status: 'failed',
         message: 'You entered wrong password!',
       });
-    // create new token for first time log in
-    if (registeredUser.token) return res.status(201).json({ status: 'success', data: { token: registeredUser.token } });
+
+    // create new token every time user login successfully
     const token = jwt.sign(
       {
         userId: registeredUser.userId,
@@ -94,7 +94,7 @@ exports.forgetPassword = async (req, res) => {
     const token = jwt.sign({ userId: oldUser._id, email: oldUser.email }, process.env.RESET_SECRET, {
       expiresIn: '10m',
     });
-    const resetLink = `http://localhost:8000/auth/reset/${token}`;
+    const resetLink = `https://shop-easy-backend.onrender.com/auth/reset/${token}`;
     sendeEmailFun(resetTemplate, oldUser.email, resetLink, oldUser.userName);
     res.status(201).json({ status: 'success', message: 'Check your mail to reset your password!' });
   } catch (err) {

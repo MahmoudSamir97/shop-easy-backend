@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-const verifyTemplate = require('./verify_template');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {

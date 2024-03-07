@@ -23,4 +23,11 @@ app.use('/coupon', couponRoutes);
 app.use('/cart', cartRoutes);
 app.use('/strip', stripRoutes);
 
+// ERROR
+app.all('*', (req, res, next) => {
+  next(new AppError(`${req.originalUrl} doesn't exist on server`, 404));
+});
+
+app.use(globalErrorHandler);
+
 module.exports = app;
